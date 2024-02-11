@@ -1,12 +1,8 @@
-#ifndef _PLATFORM_STM32_HAL_EXT_H_
-#define _PLATFORM_STM32_HAL_EXT_H_
+#ifndef _HAL_EXT_H_
+#define _HAL_EXT_H_
 
-
-#ifdef PLATFORM_STM32
 #include "include.h"
-
 #include "stm32l0xx_hal.h"
-
 
 
 /**
@@ -28,12 +24,11 @@ static inline Error HalErrors_GetError(HAL_StatusTypeDef status)
         case HAL_TIMEOUT:
             return Error_Timeout;                                
         default:
-            return Error_Unknown;;
+            return Error_Unknown;
     }
 
     return Error_Unknown;
 }
 
-#endif
 
-#endif // _PLATFORM_STM32_HAL_EXT_H_
+#endif // _HAL_EXT_H_
