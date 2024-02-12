@@ -14,7 +14,7 @@ static Error  GpioPin_GetPinContext(int pinEnum, GPIO_TypeDef **port, uint16_t *
 
     for (size_t i = 0; i < _size; i++)
     {
-        if ( _pinContext[i].pin == pinEnum){
+        if ( _pinContext[i].pinEnum == pinEnum){
 
             *port = _pinContext[i].port;
             *pinNumber = _pinContext[i].pin;
