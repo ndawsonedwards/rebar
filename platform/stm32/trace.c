@@ -9,32 +9,33 @@ static TraceLevel _level;
 
 
 
-static int Trace_PrependLevel(char *buffer, TraceLevel level ) {
+static int Trace_PrependLevel(char *buffer, uint16_t size, TraceLevel level ) {
 
     char *prepend = "";
     switch (level)
     {
         case TraceLevel_Critical:
-            prepend = "[CRIT] ";
+            prepend = "[CRIT]";
             break;
         case TraceLevel_Error:
-            prepend = "[ERROR] ";
+            prepend = "[ERROR]";
             break;    
         case TraceLevel_Warning:
-            prepend = "[WARN] ";
+            prepend = "[WARN]";
             break;
         case TraceLevel_Info:
-            prepend = "[INFO] ";
+            prepend = "[INFO]";
             break;    
         case TraceLevel_Debug:
-            prepend = "[DBG] ";
+            prepend = "[DBG]";
             break;
 
         default:
             break;
     }
     
-    return snprintf(buffer, strlen(prepend), prepend);
+    return snprintf(buffer, size, "%s ", prepend); 
+
 }
 
 
@@ -84,7 +85,7 @@ Error Trace_PrintLine(TraceLevel level, const char *format,...) {
 
     va_end(args);
 
-    char * newLine = "/n";
+    char * newLine = "\n";
     HAL_StatusTypeDef result = HAL_UART_Transmit(_uart, (uint8_t*) newLine, strlen(newLine), 1000 );
     if (result != HAL_OK) {
         return HalErrors_GetError(result);
@@ -109,19 +110,17 @@ Error Trace_Print(TraceLevel level, const char *format,...)
     va_list args;
     va_start(args,format);
 
-    char buffer[256] = {0};
-    
-    int count = Trace_PrependLevel(buffer, level);
+    char buffer[128] = {0};
+    int count = Trace_PrependLevel(buffer, sizeof(buffer), level);
     if (count < 0) {
         return Error_RequestFailed;
     }
 
-    vsnprintf(buffer + count, sizeof(buffer - count), format, args);
+    (void) vsnprintf(buffer+count, sizeof(buffer)-count, format, args);
     int size = strlen(buffer);
     if (size == 0 ) {
         return Error_OperationCancelled;
     }
-    size = (size < sizeof(buffer)) ? size : sizeof(buffer);
 
     HAL_StatusTypeDef result =  HAL_UART_Transmit(_uart, (uint8_t*) buffer, size, 1000 );
     if (result != HAL_OK) {
