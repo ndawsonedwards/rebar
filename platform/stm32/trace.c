@@ -62,6 +62,33 @@ Error Trace_Initialize(void *uart, TraceLevel level) {
 }
 
 
+static Error Trace_PrintArgs(TraceLevel level, const char *format, va_list args) {
+
+    if (ILLEGAL_POINTER(format)) 
+    { 
+        return Error_IllegalPointer;
+    }
+
+    char buffer[128] = {0};
+    int count = Trace_PrependLevel(buffer, sizeof(buffer), level);
+    if (count < 0) {
+        return Error_RequestFailed;
+    }
+
+    (void) vsnprintf(buffer+count, sizeof(buffer)-count, format, args);
+    int size = strlen(buffer);
+    if (size == 0 ) {
+        return Error_OperationCancelled;
+    }
+
+    HAL_StatusTypeDef result =  HAL_UART_Transmit(_uart, (uint8_t*) buffer, size, 1000 );
+    if (result != HAL_OK) {
+        return HalErrors_GetError(result);
+    }
+
+
+    return Error_None;
+}
 
 Error Trace_PrintLine(TraceLevel level, const char *format,...) {
 
@@ -74,12 +101,12 @@ Error Trace_PrintLine(TraceLevel level, const char *format,...) {
         return Error_None;
     }
 
+
     va_list args;
     va_start(args,format);
-
-
-    Error error = Trace_Print(level, format, args);
-    if ( error != Error_None ) {
+    
+    Error error = Trace_PrintArgs(level, format, args);
+    if (error != Error_None) {
         return error;
     }
 
@@ -110,23 +137,11 @@ Error Trace_Print(TraceLevel level, const char *format,...)
     va_list args;
     va_start(args,format);
 
-    char buffer[128] = {0};
-    int count = Trace_PrependLevel(buffer, sizeof(buffer), level);
-    if (count < 0) {
-        return Error_RequestFailed;
+    Error error = Trace_PrintArgs(level, format, args);
+    if (error != Error_None) {
+        return error;
     }
-
-    (void) vsnprintf(buffer+count, sizeof(buffer)-count, format, args);
-    int size = strlen(buffer);
-    if (size == 0 ) {
-        return Error_OperationCancelled;
-    }
-
-    HAL_StatusTypeDef result =  HAL_UART_Transmit(_uart, (uint8_t*) buffer, size, 1000 );
-    if (result != HAL_OK) {
-        return HalErrors_GetError(result);
-    }
-
+    
     va_end(args);
 
     return Error_None;

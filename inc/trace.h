@@ -72,11 +72,11 @@ Error Trace_PrintLine(TraceLevel level, const char *Format,...);
 void Trace_SetLevel(TraceLevel level);
  
  
-#define PRINT_DEBUG(Format)     Trace_Print(TraceLevel_Debug, Format, ...)
-#define PRINT_INFO(Format)      Trace_Print(TraceLevel_Info, Format, ...)
-#define PRINT_WARN(Format)      Trace_Print(TraceLevel_Warning, Format, ...)
-#define PRINT_ERROR(Format)     Trace_Print(TraceLevel_Error, Format, ...)
-#define PRINT_CRITICAL(Format)  Trace_Print(TraceLevel_Critical, Format, ...)
+#define TRACE_DEBUG(...)     Trace_PrintLine(TraceLevel_Debug, __VA_ARGS__ ) 
+#define TRACE_INFO(...)      Trace_PrintLine(TraceLevel_Info,  __VA_ARGS__ )
+#define TRACE_WARN(...)      Trace_PrintLine(TraceLevel_Warning,  __VA_ARGS__ )
+#define TRACE_ERROR(...)     Trace_PrintLine(TraceLevel_Error,  __VA_ARGS__ ) 
+#define TRACE_CRITICAL(...)  Trace_PrintLine(TraceLevel_Critical,  __VA_ARGS__ )
 
 
 #endif //_TRACE_H_
