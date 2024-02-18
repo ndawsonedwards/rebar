@@ -1,7 +1,7 @@
-#ifndef _TARGET_RESET_REASON_H_
-#define _TARGET_RESET_REASON_H_
+#ifndef TARGET_RESET_REASON_H
+#define TARGET_RESET_REASON_H
 
-#include "include.h"
+#include "rebar.h"
 
 /**
  * @brief List of supported reset flags

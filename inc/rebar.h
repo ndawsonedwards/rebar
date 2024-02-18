@@ -1,5 +1,5 @@
-#ifndef _INCLUDE_H_
-#define _INCLUDE_H_
+#ifndef REBAR_H
+#define REBAR_H
 
 
 /*****************************************************
@@ -18,6 +18,10 @@
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 #endif //ARRAY_SIZE
 
+#ifndef NULL
+#define NULL (void *)0
+#endif
+
 
 #define VARIABLE_UNUSED(x)              ((void) x)
 
@@ -26,4 +30,4 @@
 
 #define ILLEGAL_POINTER(x)              (!(x))
 
-#endif //_INCLUDE_H_
+#endif //REBAR_H

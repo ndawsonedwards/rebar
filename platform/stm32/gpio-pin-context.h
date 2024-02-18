@@ -1,5 +1,5 @@
-#ifndef _GPIO_PIN_CONTEXT_H_
-#define _GPIO_PIN_CONTEXT_H_
+#ifndef GPIO_PIN_CONTEXT_H
+#define GPIO_PIN_CONTEXT_H
 
 #include "stm32l0xx_hal.h"
 
@@ -13,4 +13,4 @@ typedef struct {
 
 }GpioPinContext;
 
-#endif // _GPIO_PIN_CONTEXT_H_
+#endif // GPIO_PIN_CONTEXT_H

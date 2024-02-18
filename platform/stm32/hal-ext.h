@@ -1,7 +1,7 @@
-#ifndef _HAL_EXT_H_
-#define _HAL_EXT_H_
+#ifndef HAL_EXT_H
+#define HAL_EXT_H
 
-#include "include.h"
+#include "rebar.h"
 #include "stm32l0xx_hal.h"
 
 
@@ -31,4 +31,4 @@ static inline Error HalErrors_GetError(HAL_StatusTypeDef status)
 }
 
 
-#endif // _HAL_EXT_H_
+#endif // HAL_EXT_H

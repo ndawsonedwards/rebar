@@ -1,13 +1,11 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#include "include.h"
+#include "rebar.h"
 #include "data-element.h"
 
 typedef struct LinkedListNode{
-    DataElement * element;
-
-    LinkedListNode *next;
+    struct LinkedListNode *next;
 
 }LinkedListNode;
 

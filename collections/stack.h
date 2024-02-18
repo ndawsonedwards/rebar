@@ -1,7 +1,7 @@
-#ifndef STACK_HError();
+#ifndef STACK_H
 #define STACK_H
 
-#include "include.h"
+#include "rebar.h"
 #include "data-element.h"
 
 typedef struct {

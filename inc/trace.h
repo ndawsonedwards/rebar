@@ -1,7 +1,7 @@
-#ifndef _TRACE_H_
-#define _TRACE_H_
+#ifndef TRACE_H
+#define TRACE_H
 
-#include "include.h"
+#include "rebar.h"
 
 typedef enum  {
 
@@ -79,4 +79,4 @@ void Trace_SetLevel(TraceLevel level);
 #define TRACE_CRITICAL(...)  Trace_PrintLine(TraceLevel_Critical,  __VA_ARGS__ )
 
 
-#endif //_TRACE_H_
+#endif //TRACE_H

@@ -1,15 +1,15 @@
-#ifndef RING_BUFFER_Hstack
+#ifndef RING_BUFFER_H
 #define RING_BUFFER_H
 
 
-#include "include.h"
+#include "rebar.h"
 #include "data-element.h"
 
 typedef struct {
     DataElement *data;
     uint32_t head; 
     uint32_t tail; 
-    uint32_t capacity
+    uint32_t capacity;
 } RingBuffer;
 
 /**

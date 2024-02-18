@@ -1,7 +1,7 @@
-#ifndef _SYSTEM_TIME_H_
-#define _SYSTEM_TIME_H_
+#ifndef SYSTEM_TIME_H
+#define SYSTEM_TIME_H
 
-#include "include.h"
+#include "rebar.h"
 
 typedef uint32_t TimeStamp;
 
@@ -22,4 +22,4 @@ Error SystemTime_GetTimeStampMs(TimeStamp *timeStamp);
  */
 Error SystemTime_GetMillisecondsSince(TimeStamp start, TimeStamp *elapsed);
 
-#endif // _SYSTEM_TIME_H_
+#endif // SYSTEM_TIME_H
