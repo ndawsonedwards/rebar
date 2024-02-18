@@ -1,0 +1,27 @@
+# Locate source files
+file(GLOB SRC_FILES "${PROJECT_SOURCE_DIR}/collections/*.c")
+
+message("Source : " ${SRC_FILES})
+
+file(GLOB TEST_SRC_FILES "${PROJECT_SOURCE_DIR}/tests/collections/*.cc")
+message("Test Source : " ${TEST_SRC_FILES})
+
+
+# Create test executable
+enable_testing()
+
+add_executable(${TEST_PROJECT_NAME} 
+  ${SRC_FILES} 
+  ${TEST_SRC_FILES})
+
+target_include_directories (${TEST_PROJECT_NAME}
+  PUBLIC
+  ${PROJECT_SOURCE_DIR}/inc
+  ${PROJECT_SOURCE_DIR}/collections
+  ${googletest_SOURCE_DIR}/googletest/include/gtest)
+
+  # Link GoogleTest to the test executable
+target_link_libraries(${TEST_PROJECT_NAME} GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(${TEST_PROJECT_NAME})

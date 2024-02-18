@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.14)
+project(rebar VERSION 0.1.0 )
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+
+# Include directories
+include_directories("src")
+
+# Locate source files
+file(GLOB_RECURSE SRC_FILES "${PROJECT_SOURCE_DIR}/*.c")
+file(GLOB SRC_FILES
+        "${PROJECT_SOURCE_DIR}/collections/*.c")
+
+#TODO - add platform layer when it is buildable, without platform dependencies (HAL, CMSIS, etc)
+include_directories(${PROJECT_SOURCE_DIR}/include
+                    ${PROJECT_SOURCE_DIR}/collections )
+
+
+add_library("${PROJECT_NAME}" STATIC ${SRC_FILES})
+
+
+enable_testing()
+add_subdirectory(tests)

@@ -82,7 +82,7 @@ Error RingBuffer_GetSize(RingBuffer *buffer, uint32_t *size)
         return Error_IllegalPointer;
     }
 
-    *size = (buffer->head > buffer->tail) ? 
+    *size = (buffer->head >= buffer->tail) ? 
                 (buffer->head - buffer->tail) :
                 (buffer->head + buffer->capacity - buffer->tail);
 
