@@ -5,7 +5,7 @@
 #include "data-element.h"
 
 typedef struct LinkedListNode{
-    DataElement * data;
+    DataElement * element;
 
     LinkedListNode *next;
 

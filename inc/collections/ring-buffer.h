@@ -1,5 +1,5 @@
-#ifndef CIRCULAR_BUFFER_Hstack
-#define CIRCULAR_BUFFER_H
+#ifndef RING_BUFFER_Hstack
+#define RING_BUFFER_H
 
 
 #include "include.h"
@@ -7,9 +7,8 @@
 
 typedef struct {
     DataElement *data;
-    void *front; 
-    void *rear; 
-    uint32_t size;
+    uint32_t head; 
+    uint32_t tail; 
     uint32_t capacity
 } RingBuffer;
 
@@ -21,7 +20,10 @@ typedef struct {
  * @param capacity total amount of elements ring buffer can contain 
  * @return Error 
  */
-Error RingBuffer_Initialize(RingBuffer *buffer, uint16_t elementSize, uint32_t capacity);
+Error RingBuffer_Initialize(RingBuffer *buffer, 
+                            uint16_t bufferSize, 
+                            uint16_t elementSize, 
+                            uint32_t capacity);
 
 /**
  * @brief Enring buffers an item onto the ring buffer
@@ -30,7 +32,7 @@ Error RingBuffer_Initialize(RingBuffer *buffer, uint16_t elementSize, uint32_t c
  * @param item item to add to the ring buffer
  * @return Error 
  */
-Error RingBuffer_Enqueue(RingBuffer *buffer, void *item);
+Error RingBuffer_Enqueue(RingBuffer *buffer, DataElement *item);
 
 /**
  * @brief Dering buffers an item off of the ring buffer
@@ -39,7 +41,7 @@ Error RingBuffer_Enqueue(RingBuffer *buffer, void *item);
  * @param item item that is removed from the ring buffer
  * @return Error 
  */
-Error RingBuffer_Dequeue(RingBuffer *buffer,void *item);
+Error RingBuffer_Dequeue(RingBuffer *buffer, DataElement *item);
 
 /**
  * @brief Checks if there is an element to Dering buffer. This does not remove the item from the ring buffer
@@ -48,15 +50,16 @@ Error RingBuffer_Dequeue(RingBuffer *buffer,void *item);
  * @param item Next itme, if available. or NULL if there is no item to peek
  * @return Error 
  */
-Error RingBuffer_Peek(RingBuffer *buffer, void *item);
+Error RingBuffer_Peek(RingBuffer *buffer, DataElement *item);
 
 /**
  * @brief Returns the total number of items on the ring buffer
  * 
  * @param buffer RingBuffer
+ * @param size The amount of items stored in the buffer
  * @return Error 
  */
-Error RingBuffer_GetCount(RingBuffer *buffer);
+Error RingBuffer_GetSize(RingBuffer *buffer, uint32_t *size);
 
 /**
  * @brief Checks if the ring buffer is full
@@ -77,4 +80,4 @@ bool RingBuffer_IsFull(RingBuffer *buffer);
 bool RingBuffer_IsEmpty(RingBuffer *buffer);
 
 
-#endif // CIRCULAR_BUFFER_H
+#endif // RING_BUFFER_H

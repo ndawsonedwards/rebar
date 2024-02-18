@@ -3,12 +3,20 @@
 
 #include <stdint.h>
 
-typedef struct {
-    void *data;
+/**
+ * @brief Union of data types to support generic type ring buffer
+ * 
+ */
+typedef union {
 
-    uint32_t sizeInBytes;
+    void *pointer;
 
+    uint32_t valueInt;
+
+    float valueFloat;
 }DataElement;
+
+
 
 
 #endif // DATA_ELEMENT_H
