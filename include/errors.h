@@ -62,6 +62,8 @@ typedef enum
 
     Error_OutOfBounds,
 
+    Error_NotImplemented,
+
     Error_Unknown,
 
 }Error;

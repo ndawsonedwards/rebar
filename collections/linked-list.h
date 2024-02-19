@@ -13,13 +13,17 @@ typedef struct LinkedListNode{
 typedef struct {
     LinkedListNode *head;
 
+    uint32_t capacity;
     uint16_t length;
 
 }LinkedList;
 
 
+#define LINKED_LIST_FOR_EACH(i, list)   for((i) = (list).head;\
+                                            (i) != (NULL);\
+                                            (i) = (LinkedListNode *)((i)->next))
 
-typedef bool (*LinkedList_Search)(DataElement *element);
+typedef bool (*LinkedList_Search)(LinkedListNode *node);
 
 /**
  * @brief Initialized linked list for first time use
@@ -27,37 +31,18 @@ typedef bool (*LinkedList_Search)(DataElement *element);
  * @param list pointer to Linked List structure
  * @return Error 
  */
-Error LinkedList_Initialize(LinkedList *const list);
+Error LinkedList_Initialize(LinkedList *const list, uint32_t capacity);
 
 
 /**
- * @brief Appends node to end of Linked List
+ * @brief Appends a node to end of Linked List
  * 
  * @param list Linked list to append to the end
- * @param node Node to append to the end
+ * @param addNode Node to append to the end
  * @return Error 
  */
-Error LinkedList_Append(LinkedList *const list, LinkedListNode *const node);
+Error LinkedList_Append(LinkedList *const list, LinkedListNode *const addNode);
 
-/**
- * @brief Adds Node at the speciied index, or appends if index is larger than current length. 
- * 
- * @param list Linked list
- * @param node Node to add 
- * @param index index position to add the node at
- * @return Error 
- */
-Error LinkedList_AddAt(LinkedList *const list, LinkedListNode *const node, uint16_t index);
-
-/**
- * @brief Adds the node after the specified node
- * 
- * @param list Linked List
- * @param after Node in the linked list that the new node will be added after
- * @param node Node to be added 
- * @return Error 
- */
-Error LinkedList_AddAfter(LinkedList *const list, LinkedListNode *const after, LinkedListNode * const node);
 
 /**
  * @brief Removes the node from the linked list
@@ -73,12 +58,20 @@ Error LinkedList_Remove(LinkedList *const list, LinkedListNode *const node);
  * 
  * @param list Linked List
  * @param searchFunction Search function to perform the per node check
+ * @param foundlist Returns list of items which match search criteria
  * @return Error 
  */
-Error LinkedList_Contains(LinkedList *const list, LinkedList_Search searchFunction);
+Error LinkedList_Contains(LinkedList *const list, LinkedList_Search searchFunction, LinkedList * foundList);
 
-uint16_t LinkedList_GetLength();
+/**
+ * @brief returns the count of nodes in the list
+ * 
+ * @param list Linked List to return count for
+ * @return uint16_t 
+ */
+uint16_t LinkedList_GetLength(LinkedList *const list);
 
-Error LinkedList_Terminate(LinkedList * const list);
+
+Error LinkedList_Reset(LinkedList * const list);
 
 #endif // LINKED_LIST_H
