@@ -10,6 +10,7 @@ typedef struct {
     uint32_t head; 
     uint32_t tail; 
     uint32_t capacity;
+    bool isFull;
 } RingBuffer;
 
 /**
@@ -26,13 +27,23 @@ Error RingBuffer_Initialize(RingBuffer *buffer,
                             uint32_t capacity);
 
 /**
- * @brief Enring buffers an item onto the ring buffer
+ * @brief Enqueues an item onto the ring buffer. Returns Insufficient Memory error if Enqueue when full
  * 
  * @param buffer Ring Buffer to add to 
  * @param item item to add to the ring buffer
  * @return Error 
  */
 Error RingBuffer_Enqueue(RingBuffer *buffer, DataElement *item);
+
+/**
+ * @brief Enqueues an item onto the ring buffer. Will overrite next element if full.
+ * 
+ * @param buffer Ring Buffer to add to 
+ * @param item item to add to the ring buffer
+ * @return Error 
+ */
+Error RingBuffer_EnqueueOverwrite(RingBuffer *buffer, DataElement *item);
+
 
 /**
  * @brief Dering buffers an item off of the ring buffer
@@ -44,7 +55,7 @@ Error RingBuffer_Enqueue(RingBuffer *buffer, DataElement *item);
 Error RingBuffer_Dequeue(RingBuffer *buffer, DataElement *item);
 
 /**
- * @brief Checks if there is an element to Dering buffer. This does not remove the item from the ring buffer
+ * @brief Checks if there is an element to Dering buffer. This does not remove the item from the ring buffer. Returns Error_NotFound if buffer is empty
  * 
  * @param buffer Ring Buffer to peek from 
  * @param item Next itme, if available. or NULL if there is no item to peek
@@ -65,19 +76,26 @@ Error RingBuffer_GetSize(RingBuffer *buffer, uint32_t *size);
  * @brief Checks if the ring buffer is full
  * 
  * @param buffer Ring Buffer to check 
- * @return true If ring buffer is full
- * @return false If ring buffer is not full
+ * @param isFull return true if ring buffer is full, false otherwise
+ * @return Error 
  */
-bool RingBuffer_IsFull(RingBuffer *buffer);
+Error RingBuffer_IsFull(RingBuffer *buffer, bool *isFull);
 
 /**
  * @brief Checks if the ring buffer is emtpy
  * 
  * @param buffer Ring Buffer to check
- * @return true If ring buffer is empty
- * @return false If ring buffer is not empty
+ * @param isEmpty return true if ring buffer is empty, false otherwise
+ * @return Error 
  */
-bool RingBuffer_IsEmpty(RingBuffer *buffer);
+Error RingBuffer_IsEmpty(RingBuffer *buffer, bool *isEmpty);
 
+/**
+ * @brief Clears entries from the buffer. 
+ * 
+ * @param buffer 
+ * @return Error 
+ */
+Error RingBuffer_Clear(RingBuffer *buffer);
 
 #endif // RING_BUFFER_H
