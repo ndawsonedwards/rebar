@@ -27,13 +27,13 @@ Error RingBuffer_Initialize(RingBuffer *buffer,
                             uint32_t capacity);
 
 /**
- * @brief Enqueues an item onto the ring buffer. Returns Insufficient Memory error if Enqueue when full
+ * @brief Enqueues an item onto the ring buffer. Returns Insufficient Memory error if Enqueue attempted when full
  * 
  * @param buffer Ring Buffer to add to 
  * @param item item to add to the ring buffer
  * @return Error 
  */
-Error RingBuffer_Enqueue(RingBuffer *buffer, DataElement *item);
+Error RingBuffer_EnqueueNoOverwrite(RingBuffer *buffer, DataElement *item);
 
 /**
  * @brief Enqueues an item onto the ring buffer. Will overrite next element if full.
@@ -42,7 +42,7 @@ Error RingBuffer_Enqueue(RingBuffer *buffer, DataElement *item);
  * @param item item to add to the ring buffer
  * @return Error 
  */
-Error RingBuffer_EnqueueOverwrite(RingBuffer *buffer, DataElement *item);
+Error RingBuffer_Enqueue(RingBuffer *buffer, DataElement *item);
 
 
 /**
