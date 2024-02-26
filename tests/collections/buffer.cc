@@ -79,3 +79,36 @@ TEST_F(BufferTest, ReadWrite_Uint32) {
         EXPECT_EQ(i, entry);
     }
 }
+
+
+TEST_F(BufferTest, ReadWrite_StructArray) {
+
+    typedef struct {
+        uint32_t a;
+        uint32_t b;
+    } BasicStruct;
+
+    Buffer buffer = {0};
+	BasicStruct data[SIZE];
+    
+    Error error = Buffer_Initialize(data, sizeof(data) ,&buffer);
+    EXPECT_EQ(Error_None, error);
+    EXPECT_EQ(sizeof(data), buffer.lengthInBytes);
+
+    for (uint32_t i = 0; i < ARRAY_SIZE(data); i++)
+    {
+        BasicStruct entry = {.a = i, .b = i*2};
+        error = Buffer_Write(&buffer, &entry, sizeof(entry), sizeof(entry) * i);
+        EXPECT_EQ(Error_None, error);
+    }
+
+    for (uint32_t i = 0; i < ARRAY_SIZE(data); i++)
+    {
+        BasicStruct entry = {0};
+        error = Buffer_Read(&buffer, &entry, sizeof(entry), sizeof(entry) * i);
+        EXPECT_EQ(Error_None, error);
+        EXPECT_EQ(i, entry.a);
+        EXPECT_EQ(i*2, entry.b);
+    }
+}
+

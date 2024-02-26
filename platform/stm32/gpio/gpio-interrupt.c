@@ -1,55 +1,85 @@
 #include "gpio-interrupt.h"
+#include "linked-list.h"
+#include "gpio-config.h"
 
 
-#define MAX_RISING_SIZE 3
-#define MAX_FALLING_SIZE 3
+typedef struct {
+    GpioInterruptContext * context;
+    uint8_t length;
+    uint8_t capacity;
+}GpioInterruptArray;
 
-uint8_t _risingLength = 0;
-uint8_t _fallingLength = 0;
 
-GpioInterruptContext _risingContext[MAX_RISING_SIZE];
-GpioInterruptContext _fallingContext[MAX_FALLING_SIZE];
-
+static GpioInterruptArray _risingArray = {0};
+static GpioInterruptArray _fallingArray = {0};
 
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t gpioPin)
 {
-    uint8_t i;
-    for (i = 0; i < _risingLength; i++)
-    {
-        if (_risingContext[i].trigger.pinNumber != gpioPin)
-        {
+    for (uint8_t i = 0; i < _risingArray.length; i++) {
+        if (_risingArray.context[i].trigger.pinNumber != gpioPin) {
             continue;
         }
 
-        if ( ILLEGAL_POINTER( _risingContext[i].callback ))
-        {
+        if ( ILLEGAL_POINTER( _risingArray.context[i].callback )) {
             return;
         }
 
         GpioInterruptTrigger trigger = { .pinNumber = gpioPin, .edgeDetect = GpioEdgeDetect_Rising};
-        _risingContext[i].callback(trigger);
+        _risingArray.context[i].callback(trigger);
     }
 }
 
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t gpioPin)
 {
-    uint8_t i;
-    for (i = 0; i < _fallingLength; i++)
-    {
-        if (_fallingContext[i].trigger.pinNumber != gpioPin)
-        {
+    for (uint8_t i = 0; i < _fallingArray.length; i++) {
+        if (_fallingArray.context[i].trigger.pinNumber != gpioPin) {
             continue;
         }
 
-        if ( ILLEGAL_POINTER( _fallingContext[i].callback ))
-        {
+        if ( ILLEGAL_POINTER( _fallingArray.context[i].callback )) {
             return;
         }
 
         GpioInterruptTrigger trigger = { .pinNumber = gpioPin, .edgeDetect = GpioEdgeDetect_Falling};
-        _fallingContext[i].callback(trigger);
+        _fallingArray.context[i].callback(trigger);
     }	
 }
+
+/**
+ * @brief Provides memory allocation for GpioInterrupt module. Context param can be NULL if associated length is 0
+ * 
+ * @param risingContext rising contxt
+ * @param risingCapacity total capacity of context. The number of unique rising interrupt events
+ * @param fallingContext falling contexts
+ * @param fallingCapacity total capacity of context. The number of unique rising interrupt events
+ * @return Error 
+ */
+Error GpioInterrupt_Initialize(GpioInterruptContext *risingContext, uint8_t risingCapacity, GpioInterruptContext *fallingContext, uint8_t fallingCapacity) {
+
+    if (risingCapacity > 0)
+    {
+        if ( ILLEGAL_POINTER(risingContext) ) {
+            return Error_IllegalPointer;
+        }
+
+        _risingArray.context = risingContext;
+        _risingArray.capacity = risingCapacity;
+        _risingArray.length = 0;
+    }
+
+    if (fallingCapacity > 0)
+    {
+        if ( ILLEGAL_POINTER(risingContext) ) {
+            return Error_IllegalPointer;
+        }
+        _fallingArray.context = fallingContext;
+        _fallingArray.capacity = fallingCapacity;
+        _fallingArray.length = 0;
+    }
+
+    return Error_None;
+}
+
 
 
 /**
@@ -59,38 +89,38 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t gpioPin)
  * @param Callback Callback to be called 
  * @return Error 
  */
-Error GpioInterrupt_RegisterCallback(GpioInterruptTrigger trigger, GpioInterruptCallback Callback)
+Error GpioInterrupt_RegisterCallback(GpioInterruptContext *context)
 {
-    if (ILLEGAL_POINTER(Callback))
-    {
-        return Error_BadParameter;
-    }
-    if (_risingLength >= MAX_RISING_SIZE)
-    {
-        return Error_InsufficientMemory;
+    if (ILLEGAL_POINTER(context)) {
+        return Error_IllegalPointer;
     }
 
-    if ((trigger.edgeDetect == GpioEdgeDetect_Rising) || (trigger.edgeDetect == GpioEdgeDetect_RisingFalling) )
+    if (ILLEGAL_POINTER(context->callback)) {
+        return Error_IllegalPointer;
+    }
+
+
+    if ((context->trigger.edgeDetect == GpioEdgeDetect_Rising) || (context->trigger.edgeDetect == GpioEdgeDetect_RisingFalling) )
     {
-        if (_risingLength >= MAX_FALLING_SIZE)
+        if (_risingArray.length >= _risingArray.capacity)
         {
             return Error_InsufficientMemory;
         }
-        _risingContext[_risingLength].trigger = trigger;
-        _risingContext[_risingLength].callback = Callback;
-        _risingLength++;
+        _risingArray.context[_risingArray.length].trigger = context->trigger;
+        _risingArray.context[_risingArray.length].callback = context->callback;
+        _risingArray.length++;
     }
 
 
-    if ((trigger.edgeDetect == GpioEdgeDetect_Falling) || (trigger.edgeDetect == GpioEdgeDetect_RisingFalling))
+    if ((context->trigger.edgeDetect == GpioEdgeDetect_Falling) || (context->trigger.edgeDetect == GpioEdgeDetect_RisingFalling))
     {
-        if (_fallingLength >= MAX_FALLING_SIZE)
+        if (_fallingArray.length >= _fallingArray.capacity)
         {
             return Error_InsufficientMemory;
         }
-        _fallingContext[_fallingLength].trigger = trigger;
-        _fallingContext[_fallingLength].callback = Callback;
-        _fallingLength++;
+        _fallingArray.context[_fallingArray.length].trigger = context->trigger;
+        _fallingArray.context[_fallingArray.length].callback = context->callback;
+        _fallingArray.length++;
     }
 
     return Error_None;
