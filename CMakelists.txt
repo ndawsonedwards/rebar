@@ -8,6 +8,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Locate source files
 file(GLOB SRC_FILES "${PROJECT_SOURCE_DIR}/collections/*.c")
 
+SET(GCC_COMPILE_FLAGS "-g")
+SET(CMAKE_CXX_FLAGS  "${GCC_COMPILE_FLAGS}")
+
 #TODO - add platform layer when it is buildable, without platform dependencies (HAL, CMSIS, etc)
 include_directories(${PROJECT_SOURCE_DIR}/include
                     ${PROJECT_SOURCE_DIR}/collections )

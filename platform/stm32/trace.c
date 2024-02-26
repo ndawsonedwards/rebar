@@ -39,9 +39,6 @@ static int Trace_PrependLevel(char *buffer, uint16_t size, TraceLevel level ) {
 }
 
 
-
-
-
 /**
  * @brief Initialize the trace module for first time use
  * 

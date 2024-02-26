@@ -49,17 +49,19 @@ TEST_F(LinkedListTest, ForEachIterator) {
 
     SampleDataNode data[LIST_CAPACITY] = {0};
     for(uint8_t i = 0; i < LIST_CAPACITY; i++) {
-        data->value = i;
+        data[i].value = i;
         error = LinkedList_Append(&list, (LinkedListNode*) &data[i]);
         EXPECT_EQ(error, Error_None);
         EXPECT_EQ(LinkedList_GetLength(&list), i+1);
+        
     }
 
-    uint16_t sum = 0;
+    uint32_t sum = 0;
     LinkedListNode *node;
     LINKED_LIST_FOR_EACH(node, list) {
-        SampleDataNode *node = node;
-        sum = sum + node->value; 
+        EXPECT_TRUE( node != NULL);
+        SampleDataNode *sampleDataNode = (SampleDataNode*) node;
+        sum = sum + sampleDataNode->value; 
     }
 
     EXPECT_EQ(sum, 45);

@@ -10,6 +10,9 @@ message("Test Source : " ${TEST_SRC_FILES})
 # Create test executable
 enable_testing()
 
+SET(GCC_COMPILE_FLAGS "-g")
+SET(CMAKE_CXX_FLAGS  "${GCC_COMPILE_FLAGS}")
+
 add_executable(${TEST_PROJECT_NAME} 
   ${SRC_FILES} 
   ${TEST_SRC_FILES})

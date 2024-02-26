@@ -12,7 +12,6 @@ typedef struct LinkedListNode{
 
 typedef struct {
     LinkedListNode *head;
-
     uint32_t capacity;
     uint16_t length;
 
