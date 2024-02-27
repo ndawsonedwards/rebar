@@ -74,3 +74,17 @@ TEST(MappingTest, LinearMapInt32_IllegalPointer) {
 
   EXPECT_EQ(err, Error_IllegalPointer);  
 }
+
+TEST(MappingTest, LinearMapInt32_Negative) {
+  int32_t input = -100;
+  int32_t output;
+  int32_t inputMin = -1000;
+  int32_t inputMax = 1000; 
+  int32_t outputMin = -500;
+  int32_t outputMax = 500;
+
+  Error err = Mapping_LinearMapInt32(input, &output, inputMin, inputMax, outputMin, outputMax);
+
+  ASSERT_EQ(err, Error_None);
+  ASSERT_EQ(output, -50);
+}
