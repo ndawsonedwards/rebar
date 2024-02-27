@@ -25,10 +25,10 @@ Error Mapping_LinearMapInt32(int32_t input, int32_t *output,int32_t inputMin, in
     }
 
     if (input < inputMin) {
-        return input = inputMin;
+        input = inputMin;
     }
     if (input > inputMax) {
-        return input = inputMax;
+        input = inputMax;
     }
 
     *output =  outputMin + (input - inputMin) * (outputMax - outputMin) / (inputMax - inputMin);
@@ -58,10 +58,10 @@ Error Mapping_LinearMapInt16(int16_t input, int16_t *output,int16_t inputMin, in
     }
 
     if (input < inputMin) {
-        return input = inputMin;
+        input = inputMin;
     }
     if (input > inputMax) {
-        return input = inputMax;
+        input = inputMax;
     }
 
     *output =  outputMin + (input - inputMin) * (outputMax - outputMin) / (inputMax - inputMin);
@@ -92,10 +92,10 @@ Error Mapping_LinearMapInt8(int8_t input, int8_t *output,int8_t inputMin, int8_t
     }
 
     if (input < inputMin) {
-        return input = inputMin;
+        input = inputMin;
     }
     if (input > inputMax) {
-        return input = inputMax;
+        input = inputMax;
     }
 
     *output =  outputMin + (input - inputMin) * (outputMax - outputMin) / (inputMax - inputMin);
