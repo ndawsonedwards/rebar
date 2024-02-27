@@ -14,7 +14,8 @@ SET(CMAKE_CXX_FLAGS  "${GCC_COMPILE_FLAGS}")
 #TODO - add platform layer when it is buildable, without platform dependencies (HAL, CMSIS, etc)
 include_directories(${PROJECT_SOURCE_DIR}/include
                     ${PROJECT_SOURCE_DIR}/interfaces
-                    ${PROJECT_SOURCE_DIR}/collections)
+                    ${PROJECT_SOURCE_DIR}/collections
+                    ${PROJECT_SOURCE_DIR}/math)
 
 add_library("${PROJECT_NAME}" STATIC ${SRC_FILES})
 

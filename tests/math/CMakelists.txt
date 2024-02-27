@@ -1,6 +1,9 @@
-set(TEST_DIR collections)
+
+set(TEST_DIR math)
 file(GLOB SRC_FILES "${PROJECT_SOURCE_DIR}/${TEST_DIR}/*.c")
 file(GLOB TEST_SRC_FILES "${PROJECT_SOURCE_DIR}/tests/${TEST_DIR}/*.cc")
+
+
 
 # Create test executable
 enable_testing()
@@ -8,7 +11,6 @@ SET(GCC_COMPILE_FLAGS "-g")
 SET(CMAKE_CXX_FLAGS  "${GCC_COMPILE_FLAGS}")
 
 SET(TEST_PROJECT_NAME ${TEST_PROJECT_NAME}-${TEST_DIR})
-
 add_executable(${TEST_PROJECT_NAME} 
   ${SRC_FILES} 
   ${TEST_SRC_FILES})

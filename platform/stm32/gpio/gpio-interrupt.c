@@ -1,6 +1,6 @@
+#include <string.h>
 #include "gpio-interrupt.h"
 #include "linked-list.h"
-#include "gpio-config.h"
 
 
 typedef struct {
@@ -106,8 +106,8 @@ Error GpioInterrupt_RegisterCallback(GpioInterruptContext *context)
         {
             return Error_InsufficientMemory;
         }
-        _risingArray.context[_risingArray.length].trigger = context->trigger;
-        _risingArray.context[_risingArray.length].callback = context->callback;
+
+        memcpy(&_risingArray.context[_risingArray.length], context, sizeof(GpioInterruptContext));
         _risingArray.length++;
     }
 
@@ -118,8 +118,8 @@ Error GpioInterrupt_RegisterCallback(GpioInterruptContext *context)
         {
             return Error_InsufficientMemory;
         }
-        _fallingArray.context[_fallingArray.length].trigger = context->trigger;
-        _fallingArray.context[_fallingArray.length].callback = context->callback;
+
+        memcpy(&_fallingArray.context[_fallingArray.length], context, sizeof(GpioInterruptContext));
         _fallingArray.length++;
     }
 
